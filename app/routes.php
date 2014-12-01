@@ -10,20 +10,21 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+//
+//Route::get('/', function()
+//{
+//	return 111;
+//	return View::make('hello');
+//});
+//
+//
+//Route::group(['admin'], function()
+//{
+//
+//
+//});
 
-Route::get('/', function()
-{
-	return View::make('hello');
-});
 
-
-Route::group(['admin'], function()
-{
-
-
-});
-
-
-Route::resource('/', 'PeopleController');
+Route::resource('p', 'PersonController');
 
 Route::resource('login', 'LoginController', ['only' => ['index', 'store']]);

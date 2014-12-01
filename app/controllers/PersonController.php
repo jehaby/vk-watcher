@@ -1,6 +1,6 @@
 <?php
 
-class PeopleController extends \BaseController {
+class PersonController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -14,6 +14,7 @@ class PeopleController extends \BaseController {
 			Redirect::to(action('PeopleController@allUsers'));
 		}
 
+		return 'hw';
 
 		//
 	}
@@ -58,6 +59,7 @@ class PeopleController extends \BaseController {
 	 */
 	public function show($id)
 	{
+		return 'shows details of person with id == ' . $id ;
 		//
 	}
 
@@ -70,6 +72,7 @@ class PeopleController extends \BaseController {
 	 */
 	public function edit($id)
 	{
+		return 'wtfwtf';
 		//
 	}
 
@@ -95,6 +98,11 @@ class PeopleController extends \BaseController {
 	public function destroy($id)
 	{
 		//
+	}
+
+	public function __call($method, $pars)
+	{
+		return 'wtf __call()';
 	}
 
 
