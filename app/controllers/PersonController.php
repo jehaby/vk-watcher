@@ -2,27 +2,36 @@
 
 class PersonController extends \BaseController {
 
+
+	public function allPersons()
+	{
+
+		return 'wtf';
+		return View::make('persons.index')->withPersons(Person::all());
+	}
+
+
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
+
+
 	public function index()
 	{
 
-		if (!'user not logged in') {
-			Redirect::to(action('PeopleController@allUsers'));
+		if (Auth::guest()) {
+			Redirect::action('PersonController@allPersons');
 		}
 
-		return 'hw';
+		$persons = Person::all() ;
+
+		return View::make('persons.index')->withPersons($persons);
 
 		//
 	}
 
-	public function allUsers()
-	{
-
-	}
 
 
 
@@ -33,6 +42,16 @@ class PersonController extends \BaseController {
 	 */
 	public function create()
 	{
+
+
+
+		// first check if user exists in db
+		// check if we can find him on vk
+		//
+
+		return View::make('persons.create');
+
+
 
 
 		//
@@ -47,7 +66,19 @@ class PersonController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		$vk_id = $this->getIDFromInput(Input::get('person_data'));
+
+		$person = Person::create(['id' => $vk_id]);
+
+//		User::find(Auth::user()->id)-
+		Auth::user()->persons()->attach($person->id);
+
+		d(Auth::user());
+		// should work well with all input types: http[s]://[m].vk.com/id666|shortAdress, http[s]://vk.com... , id8374598, 75493749375, short_adress ...
+
+		return d(Input::all());
+
+
 	}
 
 
@@ -105,5 +136,8 @@ class PersonController extends \BaseController {
 		return 'wtf __call()';
 	}
 
-
+	private function getIDFromInput($input)
+	{
+		return $input;
+	}
 }

@@ -25,6 +25,14 @@
 //});
 
 
+Route::group(['before' => 'auth'], function()  // why not work??
+{
+    Route::get('p/create', 'PersonController@create');
+    Route::post('p', 'PersonController@store');
+    Route::get('p/{p}/edit', 'PersonController@edit');
+});
+
+Route::get('p/all', ['as' => 'all', 'uses' => 'PersonController@allPersons']);
 Route::resource('p', 'PersonController');
 
 Route::resource('login', 'LoginController', ['only' => ['index', 'store']]);

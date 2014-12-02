@@ -4,7 +4,7 @@
 
     <div style="margin-top: 100px;"></div>
     <div class="col-md-4 col-md-offset-4">
-     	{{ Form::open(['route' => 'login.store']) }}
+     	{{ Form::open() }}
             <legend>
                 Login
             </legend>
