@@ -2,4 +2,6 @@
 
 @section('content')
 
+    {{ d($person) }}
+
 @endsection

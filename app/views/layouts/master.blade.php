@@ -1,8 +1,8 @@
 <html>
 <head>
-    <meta charset="utf-8">
+	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
+
 	<title> Vzhope </title>
 
 	<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}"/>
@@ -12,19 +12,20 @@
 </head>
 <body>
 
-{{ Auth::check() ? 'Hi, ' . Auth::user()->username : 'go away' }}
 
-	<div class="container main-content">
-		@yield('content')
-	</div>
+@include('header')
 
-	<footer class="container">
-		Copyright &COPY; {{ date('Y') }}
-	</footer>
+<div class="container main-content">
+	@yield('content')
+</div>
 
-	<script src="{{asset('js/jquery.js')}}"></script>
-	<script src="{{asset('js/bootstrap.min.js')}}"></script>
+<footer class="container">
+	Copyright &COPY; {{ date('Y') }}
+</footer>
 
-	@yield('script')
+<script src="{{asset('js/jquery.js')}}"></script>
+<script src="{{asset('js/bootstrap.min.js')}}"></script>
+
+@yield('script')
 </body>
 </html>

@@ -9,8 +9,15 @@ class LoginController extends \BaseController {
 	 */
 	public function index()
 	{
-//		return '111';
+		if (Auth::check()) return Redirect::route('all');
+
 		return View::make('login');
+	}
+
+	public function logout()
+	{
+		Auth::logout();
+		return Redirect::route('all');
 	}
 
 
@@ -28,8 +35,7 @@ class LoginController extends \BaseController {
 		{
 			$_SESSION['admin'] = \Auth::id();
 
-			return url('/');
-//			return $this->redirect('home')->withFlashMessage('Login Success!');
+			return Redirect::to('p');
 		}
 
 		if (getenv('TESTING'))

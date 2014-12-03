@@ -3,10 +3,14 @@
 class PersonController extends \BaseController {
 
 
+	public function __construct()
+	{
+		$this->beforeFilter('auth', ['except' => ['allPersons', 'show']]);
+	}
+
+
 	public function allPersons()
 	{
-
-		return 'wtf';
 		return View::make('persons.index')->withPersons(Person::all());
 	}
 
@@ -20,16 +24,13 @@ class PersonController extends \BaseController {
 
 	public function index()
 	{
-
 		if (Auth::guest()) {
-			Redirect::action('PersonController@allPersons');
+			return Redirect::action('PersonController@allPersons');
 		}
 
-		$persons = Person::all() ;
+		$persons = Auth::user()->persons()->get();
 
 		return View::make('persons.index')->withPersons($persons);
-
-		//
 	}
 
 
@@ -42,19 +43,11 @@ class PersonController extends \BaseController {
 	 */
 	public function create()
 	{
-
-
-
 		// first check if user exists in db
 		// check if we can find him on vk
 		//
 
 		return View::make('persons.create');
-
-
-
-
-		//
 	}
 
 
@@ -66,18 +59,15 @@ class PersonController extends \BaseController {
 	 */
 	public function store()
 	{
-		$vk_id = $this->getIDFromInput(Input::get('person_data'));
+		// should work well with all input types: http[s]://[m].vk.com/id666|shortAdress, http[s]://vk.com... , id8374598, 75493749375, short_adress ...
+
+		$vk_id = $this->checkID(Input::get('person_data'));
 
 		$person = Person::create(['id' => $vk_id]);
 
-//		User::find(Auth::user()->id)-
 		Auth::user()->persons()->attach($person->id);
 
-		d(Auth::user());
-		// should work well with all input types: http[s]://[m].vk.com/id666|shortAdress, http[s]://vk.com... , id8374598, 75493749375, short_adress ...
-
-		return d(Input::all());
-
+		return Redirect::action('PersonController@index');
 
 	}
 
@@ -90,8 +80,9 @@ class PersonController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		return 'shows details of person with id == ' . $id ;
-		//
+		$person = Person::findOrFail($id);
+
+		return View::make('persons.show')->withPerson($person);
 	}
 
 
@@ -128,7 +119,7 @@ class PersonController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+
 	}
 
 	public function __call($method, $pars)
@@ -136,8 +127,10 @@ class PersonController extends \BaseController {
 		return 'wtf __call()';
 	}
 
-	private function getIDFromInput($input)
+	private function checkID($input)
 	{
+		// should clear, check database, check vk
+
 		return $input;
 	}
 }
