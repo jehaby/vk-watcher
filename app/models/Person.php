@@ -10,6 +10,11 @@ class Person extends Eloquent {
         return $this->belongsToMany('User');
     }
 
+    public function visits()
+    {
+        return $this->belongsToMany('Visit');
+    }
+
     protected $table = 'persons';
 
 }
