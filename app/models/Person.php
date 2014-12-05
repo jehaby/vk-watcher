@@ -12,7 +12,7 @@ class Person extends Eloquent {
 
     public function visits()
     {
-        return $this->belongsToMany('Visit');
+        return $this->hasMany('Visit');
     }
 
     protected $table = 'persons';

@@ -13,3 +13,5 @@
 
 Artisan::add(new LogCommand);   // from laracast
 
+Artisan::add(new CheckVk);// from laracast
+

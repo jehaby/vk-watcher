@@ -3,9 +3,11 @@
 
 class Visit extends Eloquent{
 
-    public function persons()
+    protected $fillable = ['start', 'end', 'person_id'];
+
+    public function person()
     {
-        return $this->belongsToMany('Person');
+        return $this->belongsTo('Person');
     }
 
 }
