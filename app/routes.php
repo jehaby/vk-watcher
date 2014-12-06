@@ -44,43 +44,28 @@ Route::get('logout', ['as' => 'logout', 'uses' => 'LoginController@logout']);
 
 Route::get('test', function()
 {
-
     $persons = Person::lists('last_check_online', 'id');
     $ids_string = implode(',', array_keys($persons));
 
-    $res = json_decode(file_get_contents("https://api.vk.com/method/users.get?user_ids={$ids_string}&fields=online"));
+    $vk_response = file_get_contents("https://api.vk.com/method/users.get?user_ids={$ids_string}&fields=online");
+    $res = json_decode($vk_response);
 
-    d($res);
+    foreach($res->response as $person) {
 
-//    return;
-
-    foreach($res->response as $p) {
-
-        $last_check_online = $persons[$p->uid];  // getPersonWithThisID
+        $last_check_online = $persons[$person->uid];  // getPersonWithThisID
 
         // There will be bug if server go offline or VK ban us!
         //  it can be solved with task which checks when was the last sucessfull request to vk api
 
-
-        if ($p->online && !$last_check_online) {  // person appears online
-            Visit::create(['person_id' => $p->uid]);
-
-            $person = Person::find($p->uid);
-            $person->last_check_online = true;
-            $person->save();
+        if ($person->online && !$last_check_online) {  // person appears online
+            Visit::create(['person_id' => $person->uid]);
+            Person::find($person->uid)->update(['last_check_online' => true]);  // how many queries?
         }
 
-        if (!$p->online && $last_check_online) { // person go offline
-            $visit = Visit::where('person_id', '=', $p->uid)->latest();
-            $visit->update([]);
-
-
-            $person = Person::find($p->uid);
-            $person->last_check_online = false;
-            $person->save();
-
+        if (!$person->online && $last_check_online) { // person go offline
+            Visit::wherePersonId($person->uid)->orderBy('created_at', 'desc')->first()->touch();
+            Person::find($person->uid)->update(['last_check_online' => false]);
         }
-
     }
 
 });
@@ -89,15 +74,31 @@ Route::get('test', function()
 Route::get('test-off', function()
 {
 
-    $visit = Visit::where('person_id', '=', 18669287)->latest();
-    $visit->update([]);
+    d(Visit::wherePersonId('2232736')->orderBy('created_at', 'desc')->first()->touch());
+    return;
 
-    d($visit);
+    $persons = Person::whereLastCheckOnline(1);
 
-    $person = Person::find(18669287);
-    $person->last_check_online = false;
-    $person->save();
+    d($persons);
 
-    d($person);
+    foreach($persons->get() as $person) {
+        d($person);
+
+        $person->last_check_online = false;
+        $person->save();
+
+        Visit::where('person_id', '=', $person->id)->latest()->update([]);
+    }
+
+});
+
+
+Route::get('t2', function() {
+
+       $user = User::create([
+        'username' => 'u',
+        'email' => 'kevin.smth.42@gmail.com',
+        'password' => Hash::make('ffffff'),
+    ]);
 
 });

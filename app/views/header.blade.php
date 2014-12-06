@@ -14,9 +14,8 @@
 
                 <li><p class="navbar-text">Привет, {{ Auth::user()->username }}</p></li>
                 <li><a href={{ route('logout') }} }} type="button" class="btn btn-default navbar-btn" >Выход</a></li>
+                <li><a href={{ url('p/create') }} }} type="button" class="btn btn-default navbar-btn" >Добавить</a></li>
             @endif
-
-
 
         </ul>
 

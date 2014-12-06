@@ -6,9 +6,12 @@
 
         {{ Form::token() }}
 
-        <div class="form-group">
+        <div class="form-group {{$message ? 'has-error' : ''}}">
             <label class="col-sm-2 control-label" for="inputTitle">ID or url</label>
-            <div class="col-sm-10"><input class="form-control" type="text" name="person_data" id="inputTitle"/></div>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" name="person_data" id="inputTitle"/>
+                <span class="help-block">{{ $message or '' }}</span>
+            </div>
         </div>
 
         <div class="form-group">

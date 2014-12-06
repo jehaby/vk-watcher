@@ -1,0 +1,10 @@
+design
+
+views
+
+
+
+registration
+
+ability to delete person
+
