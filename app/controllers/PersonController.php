@@ -177,7 +177,7 @@ class PersonController extends \BaseController {
 	public function toJsonDays($id, $start_day, $end_day)
 	{
 
-		return Visit::wherePersonId($id)->whereBetween('created_at', [
+		return Visit::wherePersonId($id)->whereBetween('online', [
 				Carbon::createFromFormat('Y-m-d H', $start_day . ' 00'),
 				Carbon::createFromFormat('Y-m-d H', $end_day . ' 00'),
 			])->get()->toJson();
