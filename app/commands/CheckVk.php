@@ -5,6 +5,8 @@ use Indatus\Dispatcher\Scheduling\Schedulable;
 use Indatus\Dispatcher\Drivers\Cron\Scheduler;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Carbon\Carbon;
+
 
 class CheckVk extends ScheduledCommand {
 
@@ -50,11 +52,10 @@ class CheckVk extends ScheduledCommand {
 	 */
 	public function fire()
 	{
-// foreach Person in db ,
-// check if his status has changed
 
 		$this->doStuff();
 		Log::info('vk_watcher_works');
+
 	}
 
 	private function doStuff()  // it should be in outer class
@@ -74,12 +75,12 @@ class CheckVk extends ScheduledCommand {
 			//  it can be solved with task which checks when was the last sucessfull request to vk api
 
 			if ($person->online && !$last_check_online) {  // person appears online
-				Visit::create(['person_id' => $person->uid]);
+				Visit::create(['person_id' => $person->uid, 'online' => Carbon::now()]);
 				Person::find($person->uid)->update(['last_check_online' => true]);  // how many queries?
 			}
 
 			if (!$person->online && $last_check_online) { // person go offline
-				Visit::wherePersonId($person->uid)->orderBy('created_at', 'desc')->first()->touch();
+				Visit::wherePersonId($person->uid)->orderBy('online', 'desc')->first()->update(['offline' => Carbon::now()]);
 				Person::find($person->uid)->update(['last_check_online' => false]);
 			}
 		}

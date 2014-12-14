@@ -15,7 +15,9 @@ class CreateVisitsTable extends Migration {
 		Schema::create('visits', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->timestamps();
+			$table->timestamp('online');
+			$table->index('online');
+			$table->timestamp('offline');
 			$table->integer('person_id')->unsigned();
 			$table->foreign('person_id')->references('id')->on('persons');
 		});

@@ -1,11 +1,13 @@
 <?php
 
+use Carbon\Carbon;
+
 class PersonController extends \BaseController {
 
 
 	public function __construct()
 	{
-		$this->beforeFilter('auth', ['except' => ['allPersons', 'show', 'toJson']]);
+		$this->beforeFilter('auth', ['except' => ['allPersons', 'show', 'toJson', 'toJsonDay', 'toJsonDays']]);
 	}
 
 
@@ -76,7 +78,7 @@ class PersonController extends \BaseController {
 	{
 		$person = Person::findOrFail($id);
 
-		$visits  = $person->visits()->latest();
+		$visits  = $person->visits()->orderBy('online');
 
 		return View::make('persons.show')->withPerson($person)->withVisits($visits);
 	}
@@ -156,15 +158,33 @@ class PersonController extends \BaseController {
 		return Redirect::to('p');
 	}
 
+
 	public function toJson($id) {
 
-
-		$visits = Person::find($id)->visits()->get();
-
-		d($visits);
-
-
-		return json_encode($visits);
+		return json_encode(Person::find($id)->visits()->get());
 
 	}
+
+
+	public function toJsonDay($id, $day)
+	{
+
+		return $this->toJsonDays($id, $day, Carbon::createFromFormat('Y-m-d H', $day . ' 00')->addDay()->toDateString());
+
+	}
+
+
+	public function toJsonDays($id, $start_day, $end_day)
+	{
+
+		return Visit::wherePersonId($id)->whereBetween('created_at', [
+				Carbon::createFromFormat('Y-m-d H', $start_day . ' 00'),
+				Carbon::createFromFormat('Y-m-d H', $end_day . ' 00'),
+			])->get()->toJson();
+
+	}
+
+
 }
+
+

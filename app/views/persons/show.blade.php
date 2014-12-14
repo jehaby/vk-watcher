@@ -8,8 +8,8 @@
         @foreach($visits->get() as $visit)
             <div class="visit">
                 <p>
-                    <span>Зашел: {{d($visit->created_at); }}</span>
-                    <span>Ушел: {{$visit->updated_at; }}</span>
+                    <span>Зашел: {{$visit->online; }}</span>
+                    <span>Ушел: {{$visit->offline; }}</span>
                 </p>
             </div>
         @endforeach
