@@ -5,7 +5,7 @@ class PersonController extends \BaseController {
 
 	public function __construct()
 	{
-		$this->beforeFilter('auth', ['except' => ['allPersons', 'show']]);
+		$this->beforeFilter('auth', ['except' => ['allPersons', 'show', 'toJson']]);
 	}
 
 
@@ -154,5 +154,17 @@ class PersonController extends \BaseController {
 		Auth::user()->persons()->attach($person->id);
 
 		return Redirect::to('p');
+	}
+
+	public function toJson($id) {
+
+
+		$visits = Person::find($id)->visits()->get();
+
+		d($visits);
+
+
+		return json_encode($visits);
+
 	}
 }

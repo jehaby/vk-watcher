@@ -95,6 +95,8 @@ Route::get('test-off', function()
 
 Route::get('t2', function() {
 
+    return d(Config::get('app.timezone'));
+
        $user = User::create([
         'username' => 'u',
         'email' => 'kevin.smth.42@gmail.com',
@@ -102,3 +104,5 @@ Route::get('t2', function() {
     ]);
 
 });
+
+Route::get('p/json/{id}', 'PersonController@toJson');
