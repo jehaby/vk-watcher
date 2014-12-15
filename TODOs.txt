@@ -2,9 +2,10 @@ design
 
 views
 
-
-
 registration
 
 ability to delete person
+
+what happens when huge number of persons? (hint: display not all)
+
 
