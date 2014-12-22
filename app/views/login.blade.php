@@ -1,5 +1,9 @@
 @extends('layouts.login')
 
+@section('title')
+    <title>Вход</title>
+@endsection
+
 @section('content')
 
     <div style="margin-top: 100px;"></div>

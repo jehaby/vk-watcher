@@ -1,5 +1,10 @@
 @extends('layouts.login')
 
+@section('title')
+    <title>Регистрация</title>
+@endsection
+
+
 @section('content')
 
     <div style="margin-top: 100px;"></div>

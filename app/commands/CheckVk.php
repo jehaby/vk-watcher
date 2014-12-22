@@ -52,9 +52,14 @@ class CheckVk extends ScheduledCommand {
 	 */
 	public function fire()
 	{
+		$start_time = microtime(true);
 
 		$this->doStuff();
-		Log::info('vk_watcher_works');
+
+		Log::info(
+			'Vk Watcher works | Number of persons: ' . Person::all()->count() .
+			' | Doing stuff: ' . (microtime(true) - $start_time)
+		);
 
 	}
 

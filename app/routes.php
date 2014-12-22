@@ -21,3 +21,15 @@ Route::get('u/register', 'UserController@getRegister');
 Route::post('u/register', 'UserController@postRegister');
 Route::get('u', 'UserController@index');
 //Route::post('u/')
+
+
+Route::get('t', function()
+{
+    $start_time = microtime(true);
+    return Visit::all()->count() . 'finish in ' . (microtime(true) - $start_time);
+});
+
+Route::get('test-pure', function()
+{
+   return View::make('pure');
+});
