@@ -31,5 +31,6 @@ Route::get('t', function()
 
 Route::get('test-pure', function()
 {
+    error_reporting(0);
    return View::make('pure');
 });

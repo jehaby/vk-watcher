@@ -18,6 +18,8 @@ return array(
 	|
 	*/
 
+	'default' => 'mysql',
+
 	'connections' => array(
 
 		'mysql' => array(

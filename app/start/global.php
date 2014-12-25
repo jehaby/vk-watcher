@@ -11,6 +11,8 @@
 |
 */
 
+error_reporting(0);
+
 ClassLoader::addDirectories(array(
 
 	app_path().'/commands',

@@ -1,6 +1,5 @@
 body {
-    color: #000;
-    /*color: #777;*/
+    color: #777;
 }
 
 .pure-img-responsive {
@@ -53,8 +52,7 @@ The content `<div>` is where all your content goes.
 
 .header {
     margin: 0;
-    /*color: #333;*/
-    /*color: #fff;*/
+    color: #333;
     text-align: center;
     padding: 2.5em 2em 0;
     border-bottom: 1px solid #eee;
@@ -92,7 +90,7 @@ appears on the left side of the page.
     left: 0;
     bottom: 0;
     z-index: 1000; /* so the menu or its navicon stays above all content */
-    background: #bce0f8;
+    background: #191818;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
