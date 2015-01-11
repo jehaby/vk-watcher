@@ -1,0 +1,4 @@
+Registration, password hashing
+
+
+Define all routes in routes.php

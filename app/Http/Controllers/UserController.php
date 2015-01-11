@@ -1,6 +1,7 @@
 <?php namespace VkWatcher\Http\Controllers;
 
 use Illuminate\Routing\Controller;
+use VkWatcher\User;
 
 class UserController extends Controller{
 
@@ -13,7 +14,7 @@ class UserController extends Controller{
 
     public function postRegister()
     {
-        $validator = Validator::make(Input::all(),
+        $validator = \Validator::make(\Input::all(),
             [
                 'username' => 'required|min:1|max:32|unique:users,username',
                 'password' => 'required|min:3|max:128',
@@ -22,15 +23,14 @@ class UserController extends Controller{
         );
 
         if($validator->fails()) {
-            return Redirect::to('u/register')->withErrors($validator)->withInput();
+            return redirect('u/register')->withErrors($validator)->withInput();
         }
 
-        $new_user = User::create(Input::only('username', 'password', 'email'));
+        $new_user = User::create(\Input::only('username', 'password', 'email'));
 
         d($new_user);
 
-        return d(Input::all());
-
+        return d(\Input::all());
     }
 
 }

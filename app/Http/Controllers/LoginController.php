@@ -1,6 +1,19 @@
-<?php
+<?php namespace VkWatcher\Http\Controllers;
 
-class LoginController extends \BaseController {
+
+use Illuminate\Routing\Controller;
+use Illuminate\Contracts\Auth\Guard;
+
+class LoginController extends Controller {
+
+
+	protected $auth;
+
+
+	public function __construct(Guard $auth)
+	{
+		$this->auth = $auth;
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -9,15 +22,15 @@ class LoginController extends \BaseController {
 	 */
 	public function index()
 	{
-		if (Auth::check()) return Redirect::route('all');
+		if ($this->auth->check()) return redirect()->route('all');
 
-		return View::make('login');
+		return view('login');
 	}
 
 	public function logout()
 	{
-		Auth::logout();
-		return Redirect::route('all');
+		$this->auth->logout();
+		return redirect()->route('all');
 	}
 
 
@@ -31,19 +44,13 @@ class LoginController extends \BaseController {
 		$credentials = \Input::only('username', 'password');
 		$remember = \Input::has('remember');
 
-		if (\Auth::attempt($credentials, $remember))
+		if ($this->auth->attempt($credentials, $remember))
 		{
-			$_SESSION['admin'] = \Auth::id();
-
-			return Redirect::to('p');
+//			$_SESSION['admin'] = \Auth::id();
+			return redirect('p');
 		}
 
-		if (getenv('TESTING'))
-		{
-			return \Redirect::to('admin/login')->withFlashMessage("Login failed!")->withFlashType('danger');
-		}
-
-		return \Redirect::back()->withFlashMessage("Login failed!")->withFlashType('danger');
+		return redirect()->back()->withFlashMessage("Login failed!")->withFlashType('danger');
 	}
 
 

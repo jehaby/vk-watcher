@@ -3,9 +3,7 @@
 @section('content')
 
     <form class="form-horizontal" role="form" method="POST" action="{{ url('p/')}}">
-
-        {{ Form::token() }}
-
+        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
         <div class="form-group {{$message ? 'has-error' : ''}}">
             <label class="col-sm-2 control-label" for="inputTitle">ID or url</label>
             <div class="col-sm-10">

@@ -39,9 +39,9 @@ class PersonController extends Controller {
 			return redirect('p/all');
 		}
 
-		$persons = Auth::user()->persons()->get();
+		$persons = $this->auth->user()->persons()->get();
 
-		return View::make('persons.index')->withPersons($persons);
+		return view('persons.index')->withPersons($persons);
 	}
 
 
@@ -58,7 +58,7 @@ class PersonController extends Controller {
 		// check if we can find him on vk
 		//
 
-		return View::make('persons.create')->withMessage(Session::get('message'));
+		return view('persons.create')->withMessage(\Session::get('message'));
 	}
 
 
@@ -72,7 +72,7 @@ class PersonController extends Controller {
 	{
 		// should work well with all input types: http[s]://[m].vk.com/id666|shortAdress, http[s]://vk.com... , id8374598, 75493749375, short_adress ...
 
-		return $this->checkIdAndStorePerson(Input::get('person_data'));
+		return $this->checkIdAndStorePerson(\Input::get('person_data'));
 
 	}
 
@@ -146,15 +146,15 @@ class PersonController extends Controller {
 		$vk_response = json_decode(file_get_contents("https://api.vk.com/method/users.get?user_ids={$input}&fields=domain"));
 
 		if (property_exists($vk_response, 'error')) {
-			return Redirect::to('p/create')->withMessage('Try to enter other id');
+			return redirect('p/create')->withMessage('Try to enter other id');
 		}
 
 		$new_person = $vk_response->response[0];
 		$person = Person::find($new_person->uid);
 
 		if ($person) {
-			if (Auth::user()->persons()->get()->find($person->id)) {
-				return Redirect::to('p/create')->withMessage('You already watching this person');
+			if ($this->auth->user()->persons()->get()->find($person->id)) {  // looks like it might be stupid! TODO:think
+				return redirect('p/create')->withMessage('You already watching this person');
 			}
 		}
 		else {
@@ -166,9 +166,9 @@ class PersonController extends Controller {
 			]);
 		}
 
-		Auth::user()->persons()->attach($person->id);
+		$this->auth->user()->persons()->attach($person->id);
 
-		return Redirect::to('p');
+		return redirect('p');
 	}
 
 

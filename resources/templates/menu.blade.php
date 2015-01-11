@@ -12,7 +12,7 @@
 
             @if(Auth::guest())
                 <li><a href="{{ action('LoginController@index') }}">Вход</a></li>
-                <li><a href="{{ action('LoginController@index') }}">Регистрация</a></li>
+                <li><a href="{{ action('UserController@getRegister') }}">Регистрация</a></li>
             @else
 
                 <li><p>Привет, {{ Auth::user()->username }}</p></li>
