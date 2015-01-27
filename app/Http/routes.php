@@ -36,6 +36,10 @@ Route::get('u', 'UserController@index');
 
 Route::get('t', function()
 {
+    
+    echo App::environment();
+    return 'olo lalala';
+    
 	d(Config::has('debug'));
 	return Config::get('debug');
 	$start_time = microtime(true);
