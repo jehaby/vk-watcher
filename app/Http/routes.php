@@ -15,7 +15,9 @@ Route::get('/', 'WelcomeController@index');
 
 Route::get('/', function() {
     
-    phpinfo();
+    dd(Config::get('app.debug'));    
+    dd(Config::get('app.timezone'));
+
     return 'wtf';
 
 });
